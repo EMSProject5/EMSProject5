@@ -5,12 +5,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using EMSProject.Data;
 using EMSProject.Models;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace EMSProject.Controllers
-{  
-    public  class CurrentUser2
+{
+    public class CurrentUser2
     {
         private readonly IHttpContextAccessor _sessionContext;
         private User _loggedInUser { get; set; } = new();
@@ -22,8 +20,8 @@ namespace EMSProject.Controllers
         // NOT SURE ANY LONGER WHY USING SESSION IN THIS AFTER ALL.
         // ESPECIALLY IF INJECTION IS GOING TO BE USED
         // NOT SURE IF IT MIGHT COME HANDY IN THE LONG RUN - REMAINS TO BE SEEN
-        
-       
+
+
         /// <summary>
         /// Converts the _user object to a Json string and stores it in the session.
         /// </summary>
@@ -34,12 +32,12 @@ namespace EMSProject.Controllers
 
             //Session only takes string or int - objects have to be serialized for storing them
             string userJSon = JsonConvert.SerializeObject(user);
-            _sessionContext.HttpContext.Session.SetString("_currentUser", userJSon);            
-             
+            _sessionContext.HttpContext.Session.SetString("_currentUser", userJSon);
+
             if (GetLoggedInUser().IsUserLoggedIn)
                 loggedIn = 1;
-                
-            _sessionContext.HttpContext.Session.SetString("userEmail", user.Email);               
+
+            _sessionContext.HttpContext.Session.SetString("userEmail", user.Email);
             _sessionContext.HttpContext.Session.SetInt32("loggedInUserInt", loggedIn);
 
         }
@@ -49,16 +47,17 @@ namespace EMSProject.Controllers
         /// If the user is not logged in, a null reference is returned.
         /// </summary>
         /// <returns>Reconstructed logged in User</returns>
-        public User GetLoggedInUser ()
+        public User GetLoggedInUser()
         {
-            if (_sessionContext.HttpContext.Session.GetString("_currentUser")!= null){
+            if (_sessionContext.HttpContext.Session.GetString("_currentUser") != null)
+            {
 
                 string userJSon = _sessionContext.HttpContext.Session.GetString("_currentUser");
                 _loggedInUser = JsonConvert.DeserializeObject<User>(userJSon);
 
                 return _loggedInUser;
             }
-            return null;            
+            return null;
         }
 
         /// <summary>
@@ -68,12 +67,12 @@ namespace EMSProject.Controllers
         /// <returns></returns>
         public bool IsLoggedIn()
         {
-            if (GetLoggedInUser() == null) 
-                return false;          
-          
-            
+            if (GetLoggedInUser() == null)
+                return false;
+
+
             return GetLoggedInUser().IsUserLoggedIn;
-        }       
+        }
     }
 
     public static class ViewModelData
@@ -87,7 +86,7 @@ namespace EMSProject.Controllers
         /// </summary>
         /// <returns>A List<Booking> of all bookings</returns>
         public static List<Leave>? GetBookings() { return Alldrop.GeLeaves(); }
-        
+
         /// <summary>
         /// This method returns a list of users stored in the Sqlite databe at any given moment.
         /// </summary>
@@ -105,7 +104,7 @@ namespace EMSProject.Controllers
         public static SelectList? GeGetLeaveAllowancesSelectList() { return new SelectList(Alldrop.GetLeaveAllowances()); }
         public static SelectList? GetLeaveStatusSelectList() { return new SelectList(Alldrop.LeaveStatus()); }
         public static List<string> GetLeaveStatus() { return Alldrop.LeaveStatus(); }
-       
+
     }
 
     public class AllDropDownListData
@@ -159,12 +158,12 @@ namespace EMSProject.Controllers
             List<string> _emails = new();
 
             if (_context.Users != null)
-            {  
+            {
                 foreach (var n in _context.Users.Where(u => u.IsManager).ToList())
                 {
                     _emails.Add(n.Email);
-                }              
-            }               
+                }
+            }
 
             return _emails;
         }
@@ -227,7 +226,7 @@ namespace EMSProject.Controllers
                 }
             return _allJobTitles;
         }
-       
+
         /// <summary>
         /// Retrieving from the Sqlite DB, all Leave bookings made from the database.
         /// </summary>
@@ -245,13 +244,13 @@ namespace EMSProject.Controllers
         /// <summary>
         /// This method returns a list of specific (filtered) users stored in the Sqlite databe at any given moment.
         /// </summary>
-        public  List<User> GetFilteredUsers { get; set; } = new();   
-        
+        public List<User> GetFilteredUsers { get; set; } = new();
+
 
         public List<string> LeaveStatus()
         {
-            List<string> stat = new();          
-            
+            List<string> stat = new();
+
             stat.Add("Pending");
             stat.Add("Approved");
             stat.Add("Denied");
@@ -260,5 +259,6 @@ namespace EMSProject.Controllers
         }
 
     }
+
 
 }
