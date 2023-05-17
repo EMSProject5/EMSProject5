@@ -57,7 +57,9 @@ jobs:
     environment: 
       # The environment name must match the envrionment name in the repository
       name: Development
-      # url: 'http//dev/myapp.com'
+
+    #  url: 'http//dev/myapp.com'
+
     steps:
       - name: Deploy
         run: echo Your code is being deployed to http//dev.ems.ie
@@ -69,7 +71,9 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: Staging
-      # url: 'http://test.myapp.com'
+
+     # url: 'http://test.myapp.com'
+
     steps:
     - name: Deploy
       run: echo I am deploying to staging http://test.ems.ie
@@ -81,7 +85,9 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: Production
+
      # url: 'http://www.ems.ie'
+
     steps:
       - name: Deploy
         run: echo I am deploying to production
